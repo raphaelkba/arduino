@@ -4,7 +4,7 @@ function [f] = get_polynom(theta, x, degree)
 
     f = 0;
     for i=1:degree+1
-       f = f + theta(i).*x.^(i-1);     
+       f = f + theta(i).*x.^(i-1);
     end
     
 end

@@ -1,4 +1,4 @@
-function [coeff] = fit_polynom(x, y, degree)
+function [theta] = fit_polynom(x, y, degree)
 % fit_polynom function returns the weights of a polynom of a given degree
 % for the data x and y. Furthermore, it plots the data
 

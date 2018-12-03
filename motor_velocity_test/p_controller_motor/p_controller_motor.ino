@@ -23,11 +23,11 @@ float v_right = 0.0;
 // parameters to set
 //float input_right_motor = 107; // pre-calculated intial input right motor
 //float input_left_motor = 128; // pre-calculated intial input left motor
-float input_right_motor = 255; // pre-calculated intial input right motor
-float input_left_motor = 255; // pre-calculated intial input left motor
+float input_right_motor = 0.06; // pre-calculated intial input right motor
+float input_left_motor = 0.06; // pre-calculated intial input left motor
 
 float ref_vel = 0.09; //reference velocity (m/s) for both motors
-float p_reg = 100.0; // P controller gain
+float p_reg = 0.5; // P controller gain
 
 // simple P controller for maintaining both motors at a specific velocity
 void encoderController(float &input_right_motor, float &input_left_motor, float dt, int right_encoder_counter, int left_encoder_counter);
@@ -100,16 +100,26 @@ int EncoderEventLeft()
 
 // send input to right motor
 // int input: input value
-void runForwardRM(int input)
+void runForwardRM(float vel)
   {
+    // calculate necessary input for the given velocity  with a third degree polynom
+    float input = 31.737403 + 2539.283246*vel - 36198.463093*vel*vel + 302784.952699*vel*vel*vel;
+    Serial.print("Motor Velocity right: ");
+    Serial.println(vel,5);
+    Serial.println(input,5);
     rightMotor.setSpeed(input);
     rightMotor.run(FORWARD);
   };
   
 // send input to left motor
 // int input: input value
-void runForwardLM(int input)
+void runForwardLM(float vel)
   {
+     // calculate necessary input for the given velocity  with a third degree polynom
+    float input = -80.646388 + 8248.481767*vel - 106465.740663*vel*vel + 621555.913621*vel*vel*vel;
+    Serial.print("Motor Velocity left after: ");
+    Serial.println(vel,5);
+    Serial.println(input,5);
     leftMotor.setSpeed(input);
     leftMotor.run(FORWARD);
   };
@@ -137,11 +147,6 @@ void loop(){
   //right_encoder_counter = 0;
   //left_encoder_counter = 0; 
   
-  Serial.print("Motor Velocity right: ");
-  Serial.println(input_right_motor);
-   
-  Serial.print("Motor Velocity left: ");
-  Serial.println(input_left_motor);
   // send input to motors
   runForwardRM(input_right_motor);
   runForwardLM(input_left_motor);
@@ -157,9 +162,9 @@ void encoderController(float &input_right_motor, float &input_left_motor, float 
     v_left = left_encoder_counter*encoderM/dt; // calculates current velocity of the left motor
     v_right = right_encoder_counter*encoderM/dt; // calculates current velocity of the right motor
     Serial.print("Velocity right: ");
-    Serial.println(v_right);
+    Serial.println(v_right,5);
     Serial.print("Velocity left: ");
-    Serial.println(v_left);
+    Serial.println(v_left,5);
     //Serial.println(right_encoder_counter);
     //Serial.println(left_encoder_counter);
     

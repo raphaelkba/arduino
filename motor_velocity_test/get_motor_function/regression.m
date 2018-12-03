@@ -35,8 +35,8 @@ degree = 3;
 lambda = 0.0000005;
 %% Polynomial fitting
 % fits data in a polynom and plots
-coeff_left = fit_polynom(X, y, degree);
-
+coeff_fit = fit_polynom(X, y, degree);
+fprintf('Theta polynomial fit: %f \n', coeff_fit);
 %% Optimization Problem
 
 % gets the polynom features with ones at the front
